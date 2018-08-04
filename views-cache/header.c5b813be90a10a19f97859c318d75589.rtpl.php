@@ -1,7 +1,4 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><!DOCTYPE html>
-<!--
-    Hcode Store by hcode.com.br
--->
 <html lang="pt-br">
   <head>
     <meta charset="utf-8">
