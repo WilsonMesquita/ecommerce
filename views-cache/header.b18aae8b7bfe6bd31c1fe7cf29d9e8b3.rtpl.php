@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Starter</title>
+  <title>WM | Software</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -62,7 +62,7 @@ desired effect
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>WM</b>Software</span>
     </a>
 
     <!-- Header Navbar -->
@@ -209,7 +209,7 @@ desired effect
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="/admin/logout" class="btn btn-default btn-flat">Saída</a>
+                  <a href="/admin/logout" class="btn btn-default btn-flat">Sair</a>
                 </div>
               </li>
             </ul>
@@ -256,7 +256,7 @@ desired effect
       <ul class="sidebar-menu">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
+        <li class="active"><a href="/admin/users"><i class="fa fa-users"></i> <span>Usuários</span></a></li>
         <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>

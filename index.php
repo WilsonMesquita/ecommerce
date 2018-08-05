@@ -3,33 +3,35 @@ session_start();
 require_once("vendor/autoload.php");
 require_once("functions.php");
 
-use Hcode\Model\User;
+use \Slim\slim;
+use \Hcode\Page;
+use \Hcode\PageAdmin;
+use \Hcode\Model\User;
 
 $app = new \Slim\Slim();
 
-$app->config('debug', true);
+$app -> config('debug', true);
 
-$app->get('/', function() {
+$app -> get('/', function() {
     
-	$page = new Hcode\Page();
-
+	$page = new Page();
 	$page->setTpl("index");
 
 });
 
-$app->get('/admin', function() {
+$app -> get('/admin', function() {
     
 	User::verifyLogin();
 
-	$page = new Hcode\PageAdmin();
+	$page = new PageAdmin();
 
 	$page->setTpl("index");
 
 });
 
-$app->get('/admin/login', function() {
+$app -> get('/admin/login', function() {
     
-	$page = new Hcode\PageAdmin([
+	$page = new PageAdmin([
 		"header"=>false,
 		"footer"=>false
 	]);
@@ -38,24 +40,96 @@ $app->get('/admin/login', function() {
 
 });
 
-$app->post('/admin/login', function() {
+$app -> post('/admin/login', function() {
 
-	User::login(post('deslogin'), post('despassword'));
-
+	//User::login(post('deslogin'), post('despassword'));
+	User::login($_POST["deslogin"], $_POST["despassword"]);
 	header("Location: /admin");
 	exit;
 
 });
 
-$app->get('/admin/logout', function() {
-
-	User::logout();
-
+$app -> get('/admin/logout', function() {	
+	User::logout();	
 	header("Location: /admin/login");
 	exit;
+	
+});
+
+$app -> get("/admin/users", function() {
+
+	User::verifyLogin();
+
+	$users = User::listAll();
+
+	$page = new PageAdmin();
+	$page -> setTpl("users", array(
+		"users" => $users
+	));
+		
+});
+
+$app -> get('/admin/users/create', function() {
+			
+	User::verifyLogin();		
+	$page = new PageAdmin();	
+	$page -> setTpl("users-create");
 
 });
 
-$app->run();
+$app -> get("/admin/users/:iduser/delete", function($iduser){
+	User::verifyLogin();
+	$user = new User();
+	$user -> get((int)$iduser);
+	$user -> delete();
+	header("Location: /admin/users");
+	exit;
+});
+
+$app -> get("/admin/users/:iduser", function($iduser) {
+			
+	User::verifyLogin();
+	$user = new User();
+	$user -> get((int)$iduser);
+
+	$page = new PageAdmin();	
+	$page -> setTpl("users-update", array(
+		"user" => $user -> getValues()
+	));		
+});
+
+$app -> post("/admin/users/create", function(){
+
+	User::verifyLogin();	
+	$user = new User();
+
+	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+
+	$user -> setData($_POST);
+	$user -> save();
+
+	header("Location: /admin/users");
+	exit;
+});
+
+$app -> post("/admin/users/:iduser", function($iduser){
+	User::verifyLogin();
+	$user = new User();
+
+	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+
+	$user -> get((int)$iduser);
+	$user -> setData($_POST);
+	//$page = new PageAdmin();
+	$user -> update();
+	header("Location: /admin/users");
+	exit;
+});
+
+		/*$page -> setTpl("users-update", array(
+			"user" => $user -> getValues()
+		));*/
+
+$app -> run();
 
  ?>
