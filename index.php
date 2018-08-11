@@ -113,7 +113,9 @@ $app -> post("/admin/users/create", function(){
 });
 
 $app -> post("/admin/users/:iduser", function($iduser){
+	
 	User::verifyLogin();
+
 	$user = new User();
 
 	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
@@ -137,7 +139,6 @@ $app -> post("/admin/forgot", function(){
 	$user = User::getForgot($_POST["email"]);
 	header("Location: /admin/forgot/sent");
 	exit;
-	//var_dump("getForgot");
 });
 
 $app->get("/admin/forgot/sent", function(){
@@ -166,8 +167,7 @@ $app -> get("/admin/forgot/reset", function(){
 $app->post("/admin/forgot/reset", function(){
 
 	$forgot = User::validForgotDecrypt($_POST["code"]);	
-
-	var_dump($forgot);
+	
 	User::setForgotUsed($forgot["idrecovery"]);
 
 	$user = new User();
@@ -184,6 +184,7 @@ $app->post("/admin/forgot/reset", function(){
 });
 
 $app -> get("/admin/categories", function(){
+	User::verifyLogin();
 
 	$categories = Category::listAll();
 
@@ -196,6 +197,8 @@ $app -> get("/admin/categories", function(){
 });
 
 $app -> get("/admin/categories/create", function(){
+	
+	User::verifyLogin();
 
 	$page = new PageAdmin();
 	
@@ -204,11 +207,53 @@ $app -> get("/admin/categories/create", function(){
 });
 
 $app -> post("/admin/categories/create", function(){
+	
+	User::verifyLogin();
 
 	$category = new Category();
-	$category -> setData($_POST);	
+	$category -> setData($_POST);
 	$category -> save();
 	header('Location: /admin/categories');
+	exit;
+
+});
+
+$app->get("/admin/categories/:idcategory/delete", function($idcategory){
+	
+	User::verifyLogin();
+
+	$category = new Category();
+	$category->get((int)$idcategory);
+	$category->delete();
+	header("Location: /admin/categories");
+	exit;
+
+});
+
+$app->get("/admin/categories/:idcategory", function($idcategory){
+
+	User::verifyLogin();
+
+	$category = new Category();
+	$category->get((int)$idcategory);
+	$page = new PageAdmin();
+
+	$page->setTpl("categories-update", [
+		'category'=>$category->getValues()
+
+	]);
+});
+
+$app->post("/admin/categories/:idcategory", function($idcategory){
+
+	User::verifyLogin();
+
+	$category = new Category();
+	$category->get((int)$idcategory);
+	$category->setData($_POST);
+	$category->save();
+
+	header("Location: /admin/categories");
 	exit;
 
 });

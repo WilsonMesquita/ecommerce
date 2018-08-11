@@ -19,10 +19,6 @@ class Model {
 				case 'set':
 					  $this -> values[$fieldName] = $args[0];
 				break;
-
-				default:
-					# code...
-				break;
 			}
 	}	
 

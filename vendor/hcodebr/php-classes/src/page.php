@@ -14,7 +14,7 @@ class Page {
     
 	public function __construct($opts = array(), $tpl_dir = "/views/"){
 
-        $this->options = array_merge($this -> defaults, $opts);
+        $this -> options = array_merge($this -> defaults, $opts);
         
 		$config = array(
 			"tpl_dir" => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
@@ -25,7 +25,7 @@ class Page {
 		Tpl::configure( $config );
 		$this -> tpl = new Tpl;
 		$this -> setData($this->options["data"]);
-		if ($this->options["header"] === true) $this->tpl -> draw("header");
+		if ($this -> options["header"] === true) $this -> tpl -> draw("header");
     }
     
 	private function setData($data = array()){
@@ -36,7 +36,7 @@ class Page {
     
 	public function setTpl($name, $data = array(), $returnHTML = false){
 		$this -> setData($data);
-		return $this->tpl->draw($name, $returnHTML);
+		return $this->tpl -> draw($name, $returnHTML);
     }
     
 	public function __destruct(){

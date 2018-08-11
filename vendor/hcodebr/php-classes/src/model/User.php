@@ -108,7 +108,6 @@ class User extends Model {
 
 		));
 		$this -> setData($results[0]);
-		//$this->updateSession();		
 	}
 
 	public function delete(){
