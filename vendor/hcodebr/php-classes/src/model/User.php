@@ -9,14 +9,10 @@ use \Hcode\Mailer;
 class User extends Model {
 
 	const SESSION = "User";
-	const SECRET = "suasenhaaquicom16caracteres";
+	const SECRET = "Sua senha aqui";
 	const ERROR = "UserError";
 	const ERROR_REGISTER = "UserErrorRegister";
 	const SUCCESS = "UserSucesss";
-
-	protected $fields = [
-		"iduser", "idperson", "desperson", "deslogin", "despassword", "desemail", "nrphone", "inadmin", "dtergister"
-	];
 
 	public static function login($login, $password):User
 	{
@@ -35,8 +31,7 @@ class User extends Model {
 
 		if (password_verify($password, $data["despassword"])) {
 
-			$user = new User();
-			//$data['desperson'] = utf8_encode($data['desperson']);
+			$user = new User();			
 			$user -> setData($data);
 
 			$_SESSION[User::SESSION] = $user -> getValues();
@@ -67,7 +62,7 @@ class User extends Model {
 
 	public static function listAll(){
 		$sql = new Sql();
-		return $sql -> select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");		
+		return $sql -> select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
 	}
 
 	public function save(){
@@ -75,11 +70,9 @@ class User extends Model {
 		$sql = new Sql();
 
 		$results = $sql -> select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
-			":desperson" => utf8_decode($this -> getdesperson()),
+			":desperson" => $this -> getdesperson(),
 			":deslogin" => $this -> getdeslogin(),
-			//":despassword"=>password_hash($this->getdespassword(), PASSWORD_DEFAULT, ['cost' => 12]),
 			":despassword" => User::getPasswordHash($this->getdespassword()),
-			//":despassword" => $this -> getdespassword(),
 			":desemail" => $this -> getdesemail(),
 			":nrphone" => $this -> getnrphone(),
 			":inadmin" => $this -> getinadmin()
@@ -106,9 +99,8 @@ class User extends Model {
 
 		$results = $sql -> select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
 			":iduser" => $this -> getiduser(),
-			":desperson" => utf8_decode($this->getdesperson()),
+			":desperson" => $this->getdesperson(),
 			":deslogin" => $this->getdeslogin(),
-			//":despassword"=>User::getPasswordHash($this->getdespassword()),
 			":despassword" => $this->getdespassword(),
 			":desemail" => $this->getdesemail(),
 			":nrphone" => $this -> getnrphone(),
@@ -174,11 +166,9 @@ class User extends Model {
 		}
 	}
 
-	public static function validForgotDecrypt($result){
-		
-		var_dump($result);
-		//$idrecovery = Encryption::Decrypt($code);
-		$result = base64_decode($result);
+	public static function validForgotDecrypt($code){
+
+		$result = base64_decode($code);
      	$code = mb_substr($result, openssl_cipher_iv_length('aes-256-cbc'), null, '8bit');
      	$iv = mb_substr($result, 0, openssl_cipher_iv_length('aes-256-cbc'), '8bit');;
 		 $idrecovery = (int)openssl_decrypt($code, 'aes-256-cbc', User::SECRET, 0, $iv);
@@ -190,8 +180,7 @@ class User extends Model {
 			WHERE a.idrecovery = :idrecovery AND a.dtrecovery IS NULL
 			AND DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();
 		", array(":idrecovery" => $idrecovery));
-				
-		var_dump($idrecovery);
+
 		if (count($results) == 0){
 			throw new \Exception("Ôops, não foi possível recuperar a senha.");
 		}

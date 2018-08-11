@@ -12,10 +12,12 @@ class Sql {
 	private $conn;
 
 	public function __construct(){
-		$this->conn = new \PDO(
+
+		$this -> conn = new \PDO(
 			"mysql:dbname=".Sql::DBNAME.";host=".Sql::HOSTNAME, 
 			Sql::USERNAME,
 			Sql::PASSWORD
+
 		);
 	}
 
@@ -23,7 +25,6 @@ class Sql {
 		foreach ($parameters as $key => $value) {			
 			$this->bindParam($statement, $key, $value);
 		}
-
 	}
 
 	private function bindParam($statement, $key, $value){
@@ -37,10 +38,12 @@ class Sql {
 	}
 
 	public function select($rawQuery, $params = array()):array{
-		$stmt = $this->conn->prepare($rawQuery);
-		$this->setParams($stmt, $params);
-		$stmt->execute();
+
+		$stmt = $this -> conn -> prepare($rawQuery);
+		$this -> setParams($stmt, $params);
+		$stmt -> execute();
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
 	}
 }
 

@@ -7,6 +7,7 @@ use \Slim\slim;
 use \Hcode\Page;
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;
+use \Hcode\Model\Category;
 
 $app = new \Slim\Slim();
 
@@ -148,7 +149,7 @@ $app->get("/admin/forgot/sent", function(){
 });
 
 $app -> get("/admin/forgot/reset", function(){
-	$user = User::validForgotDecrypt($_GET["result"]);
+	$user = User::validForgotDecrypt($_GET["code"]);
 
 	$page = new PageAdmin([
 		"header" => false,
@@ -157,7 +158,7 @@ $app -> get("/admin/forgot/reset", function(){
 
 	$page->setTpl("forgot-reset", array(
 		"name" => $user["desperson"],
-		"result" => $_GET["result"]
+		"code" => $_GET["code"]
 	));
 
 });
@@ -166,13 +167,14 @@ $app->post("/admin/forgot/reset", function(){
 
 	$forgot = User::validForgotDecrypt($_POST["code"]);	
 
-	User::setFogotUsed($forgot["idrecovery"]);
+	var_dump($forgot);
+	User::setForgotUsed($forgot["idrecovery"]);
 
 	$user = new User();
 	$user -> get((int)$forgot["iduser"]);
 
 	$password = password_hash($_POST["password"], PASSWORD_DEFAULT, ["cost" => 12]);
-	$user -> setPassword("password");
+	$user -> setPassword("$password");
 
 	$page = new PageAdmin([
 		"header"=>false,
@@ -181,6 +183,35 @@ $app->post("/admin/forgot/reset", function(){
 	$page -> setTpl("forgot-reset-success");
 });
 
+$app -> get("/admin/categories", function(){
+
+	$categories = Category::listAll();
+
+	$page = new PageAdmin();
+
+	$page -> setTpl("categories", [
+		'categories' => $categories
+	]);
+
+});
+
+$app -> get("/admin/categories/create", function(){
+
+	$page = new PageAdmin();
+	
+	$page -> setTpl("categories-create");
+
+});
+
+$app -> post("/admin/categories/create", function(){
+
+	$category = new Category();
+	$category -> setData($_POST);	
+	$category -> save();
+	header('Location: /admin/categories');
+	exit;
+
+});
 
 $app -> run();
 
