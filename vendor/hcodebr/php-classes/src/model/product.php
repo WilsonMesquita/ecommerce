@@ -1,8 +1,6 @@
 <?php
 
 namespace Hcode\Model;
-ini_set('display_errors', true);
-error_reporting(E_ALL);
 
 use \Hcode\DB\Sql;
 use \Hcode\Model;
@@ -15,7 +13,19 @@ class Product extends Model {
 		$sql = new Sql();
 		return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
 
-    }
+	}
+	
+	public static function checkList($list)
+	{
+		foreach ($list as &$row) {
+			
+			$prod = new Product();
+			$prod->setData($row);
+			$row = $prod->getValues();
+
+		}
+		return $list;
+	}
     
 	public function save(){
 
