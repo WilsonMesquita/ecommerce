@@ -42,9 +42,7 @@
             <div class="col-md-3 col-sm-6">
                 <div class="footer-menu">
                     <h2 class="footer-wid-title">Categorias</h2>
-                    <ul>
-                        <?php require $this->checkTemplate("categories-menu");?>
-                    </ul>
+                    <ul><?php require $this->checkTemplate("categories-menu");?></ul>
                 </div>
             </div>
 

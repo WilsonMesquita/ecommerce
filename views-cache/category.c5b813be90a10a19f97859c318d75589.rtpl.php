@@ -1,9 +1,9 @@
-<div class="product-big-title-area">
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="product-big-title-area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2>{$category.descategory}</h2>
+                    <h2><?php echo htmlspecialchars( $category["descategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h2>
                 </div>
             </div>
         </div>
@@ -14,15 +14,15 @@
     <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
-            {loop="$products"}
+            {loop=$products}
             <div class="col-md-3 col-sm-6">
                 <div class="single-shop-product">
                     <div class="product-upper">
-                        <img src="{$value.desphoto}" alt="">
+                        <img src="<?php echo htmlspecialchars( $value["desphoto"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" alt="">
                     </div>
-                    <h2><a href="/products/{$value.desurl}">{$value.desproduct}</a></h2>
+                    <h2><a href="/products/<?php echo htmlspecialchars( $value["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></h2>
                     <div class="product-carousel-price">
-                        <ins>R${function="formatPrice($value.vlprice)"}</ins>
+                        <ins>R$<?php echo formatPrice($value["vlprice"]); ?></ins>
                     </div>  
                     
                     <div class="product-option-shop">
@@ -31,7 +31,7 @@
                     </div>                       
                 </div>
             </div>
-            {/loop}            
+            <?php } ?>            
         </div>
         
         <div class="row">
