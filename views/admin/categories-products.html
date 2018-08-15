@@ -2,9 +2,7 @@
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>
-    Produtos da Categoria {$category.descategory}
-  </h1>
+  <h1>Produtos da Categoria {$category.descategory}</h1>
   <ol class="breadcrumb">
     <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="/admin/categories">Categorias</a></li>
@@ -39,7 +37,8 @@
                             <td>{$value.idproduct}</td>
                             <td>{$value.desproduct}</td>
                             <td>
-                                <a href="/admin/categories/{$category.idcategory}/products/{$value.idproduct}/add" class="btn btn-primary btn-xs pull-right"><i class="fa fa-arrow-right"></i> Adicionar</a>
+                                <a href="/admin/categories/{$category.idcategory}/products/{$value.idproduct}/add"
+                                    class="btn btn-primary btn-xs pull-right"><i class="fa fa-arrow-right"></i> Adicionar</a>
                             </td>
                             </tr>
                             {/loop}
