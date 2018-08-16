@@ -55,6 +55,7 @@
           <!-- /.box-body -->
           <div class="box-footer">
             <button type="submit" class="btn btn-success">Cadastrar</button>
+            <a href="/admin/products" class="btn btn-default">Cancelar</a>
           </div>
         </form>
       </div>

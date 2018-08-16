@@ -15,8 +15,8 @@ class Product extends Model {
 
 	}
 	
-	public static function checkList($list)
-	{
+	public static function checkList($list){
+		
 		foreach ($list as &$row) {
 			
 			$prod = new Product();
@@ -129,8 +129,8 @@ class Product extends Model {
 	 $this->setData($rows[0]);
 	}
 
-	public function getCategories()
-	{
+	public function getCategories(){
+
 		$sql = new Sql();
 		return $sql->select("
 			SELECT *
@@ -139,6 +139,7 @@ class Product extends Model {
 			ON a.idcategory = b.idcategory
 			WHERE b.idproduct = :idproduct", [
 			':idproduct'=>$this->getidproduct()
+
 		]);
 	}
 

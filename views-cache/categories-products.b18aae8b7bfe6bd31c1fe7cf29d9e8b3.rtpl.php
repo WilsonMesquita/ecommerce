@@ -77,12 +77,13 @@
                             </tr>
                             <?php } ?>
 
-                        </tbody>
+                        </tbody>                        
                     </table>
                 </div>
             </div>
         </div>        
     </div>
+    <a href="/admin/categories" class="btn btn-warning">Cancelar</a>
 
 </section>
 <!-- /.content -->
