@@ -173,11 +173,16 @@ class Cart extends Model {
             
 			$xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
 			$result = $xml->Servicos->cServico;
+
 			if ($result->MsgErro != '') {
+
 				Cart::setMsgError($result->MsgErro);
+
             }
             else {
+
 				Cart::clearMsgError();
+
             }
             
 			$this->setnrdays($result->PrazoEntrega);
@@ -194,11 +199,13 @@ class Cart extends Model {
 
 		$value = str_replace('.', '', $value);
 		return str_replace(',', '.', $value);
+
     }
     
 	public static function setMsgError($msg){
 
 		$_SESSION[Cart::SESSION_ERROR] = $msg;
+
     }
     
 	public static function getMsgError(){
@@ -214,6 +221,7 @@ class Cart extends Model {
     }
     
 	public function updateFreight(){
+
 		if ($this->getdeszipcode() != '') {
 			$this->setFreight($this->getdeszipcode());
 		}
