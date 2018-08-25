@@ -4,6 +4,8 @@ use \Hcode\Page;
 use \Hcode\Model\Product;
 use \Hcode\Model\Category;
 use \Hcode\Model\Cart;
+use \Hcode\Model\Address;
+use \Hcode\Model\User;
 
 $app->get('/', function() {
 
@@ -109,19 +111,23 @@ $app->post("/cart/freight", function(){
 
 });
 
-/*$app->get("/checkout", function(){
+$app->get("/checkout", function(){
+		
 	User::verifyLogin(false);
 	$address = new Address();
 	$cart = Cart::getFromSession();
+
 	if (!isset($_GET['zipcode'])) {
 		$_GET['zipcode'] = $cart->getdeszipcode();
 	}
+
 	if (isset($_GET['zipcode'])) {
 		$address->loadFromCEP($_GET['zipcode']);
 		$cart->setdeszipcode($_GET['zipcode']);
 		$cart->save();
 		$cart->getCalculateTotal();
 	}
+
 	if (!$address->getdesaddress()) $address->setdesaddress('');
 	if (!$address->getdesnumber()) $address->setdesnumber('');
 	if (!$address->getdescomplement()) $address->setdescomplement('');
@@ -130,15 +136,18 @@ $app->post("/cart/freight", function(){
 	if (!$address->getdesstate()) $address->setdesstate('');
 	if (!$address->getdescountry()) $address->setdescountry('');
 	if (!$address->getdeszipcode()) $address->setdeszipcode('');
+
 	$page = new Page();
-	$page->setTpl("checkout", [
-		'cart'=>$cart->getValues(),
-		'address'=>$address->getValues(),
-		'products'=>$cart->getProducts(),
-		'error'=>Address::getMsgError()
+		$page->setTpl("checkout", [
+			'cart'=>$cart->getValues(),
+			'address'=>$address->getValues(),
+			'products'=>$cart->getProducts(),
+			'error'=>Address::getMsgError()
+
 	]);
 });
-$app->post("/checkout", function(){
+
+/*$app->post("/checkout", function(){
 	User::verifyLogin(false);
 	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
 		Address::setMsgError("Informe o CEP.");
@@ -230,7 +239,8 @@ $app->get("/order/:idorder/paypal", function($idorder){
 		'cart'=>$cart->getValues(),
 		'products'=>$cart->getProducts()
 	]);
-});
+});*/
+
 $app->get("/login", function(){
 	$page = new Page();
 	$page->setTpl("login", [
@@ -248,12 +258,14 @@ $app->post("/login", function(){
 	header("Location: /checkout");
 	exit;
 });
+
 $app->get("/logout", function(){
 	User::logout();
 	header("Location: /login");
 	exit;
 });
-$app->post("/register", function(){
+
+/*$app->post("/register", function(){
 	$_SESSION['registerValues'] = $_POST;
 	if (!isset($_POST['name']) || $_POST['name'] == '') {
 		User::setErrorRegister("Preencha o seu nome.");
