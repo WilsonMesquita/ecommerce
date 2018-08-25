@@ -112,7 +112,7 @@ $app->post("/cart/freight", function(){
 });
 
 $app->get("/checkout", function(){
-		
+
 	User::verifyLogin(false);
 	$address = new Address();
 	$cart = Cart::getFromSession();
@@ -246,7 +246,8 @@ $app->get("/login", function(){
 	$page->setTpl("login", [
 		'error'=>User::getError(),
 		'errorRegister'=>User::getErrorRegister(),
-		'registerValues'=>(isset($_SESSION['registerValues'])) ? $_SESSION['registerValues'] : ['name'=>'', 'email'=>'', 'phone'=>'']
+		'registerValues'=>(isset($_SESSION['registerValues'])) ? $_SESSION['registerValues'] : [
+			'name'=>'', 'email'=>'', 'phone'=>'']
 	]);
 });
 $app->post("/login", function(){
@@ -265,29 +266,32 @@ $app->get("/logout", function(){
 	exit;
 });
 
-/*$app->post("/register", function(){
+$app->post("/register", function(){
+
 	$_SESSION['registerValues'] = $_POST;
+
 	if (!isset($_POST['name']) || $_POST['name'] == '') {
-		User::setErrorRegister("Preencha o seu nome.");
+		User::setErrorRegister("Ôops, preencha o seu nome!");
 		header("Location: /login");
 		exit;
 	}
 	if (!isset($_POST['email']) || $_POST['email'] == '') {
-		User::setErrorRegister("Preencha o seu e-mail.");
+		User::setErrorRegister("Ôops, preencha o seu e-mail!");
 		header("Location: /login");
 		exit;
 	}
 	if (!isset($_POST['password']) || $_POST['password'] == '') {
-		User::setErrorRegister("Preencha a senha.");
+		User::setErrorRegister("Ôops, preencha a senha!");
 		header("Location: /login");
 		exit;
 	}
 	if (User::checkLoginExist($_POST['email']) === true) {
-		User::setErrorRegister("Este endereço de e-mail já está sendo usado por outro usuário.");
+		User::setErrorRegister("Ôops, este e-mail já está em uso!");
 		header("Location: /login");
 		exit;
 	}
 	$user = new User();
+	
 	$user->setData([
 		'inadmin'=>0,
 		'deslogin'=>$_POST['email'],
@@ -301,7 +305,8 @@ $app->get("/logout", function(){
 	header('Location: /checkout');
 	exit;
 });
-$app->get("/forgot", function() {
+
+/*$app->get("/forgot", function() {
 	$page = new Page();
 	$page->setTpl("forgot");	
 });
