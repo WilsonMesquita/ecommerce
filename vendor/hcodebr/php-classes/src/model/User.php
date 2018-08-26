@@ -131,7 +131,7 @@ class User extends Model {
 		$sql = new Sql();
 
 		$results = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
-			":desperson"=>utf8_decode($this->getdesperson()),
+			":desperson"=>$this->getdesperson(),
 			":deslogin"=>$this->getdeslogin(),
 			":despassword"=>User::getPasswordHash($this->getdespassword()),
 			":desemail"=>$this->getdesemail(),
@@ -152,7 +152,6 @@ class User extends Model {
 		$data = $results[0];
 		$data['desperson'] = utf8_encode($data['desperson']);
 		$this->setData($data);
-		//$this->setData($results[0]);
 
 	}
 
@@ -162,9 +161,11 @@ class User extends Model {
 
 		$results = $sql -> select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
 			":iduser"=>$this->getiduser(),
-			":desperson"=>utf8_decode($this->getdesperson()),
+			":desperson"=>$this->getdesperson(),
+			//":desperson"=>utf8_decode($this->getdesperson()),
 			":deslogin"=>$this->getdeslogin(),
-			":despassword" => User::getPasswordHash($this->getdespassword()),			
+			":despassword" => User::getPasswordHash($this->getdespassword()),
+			//":despassword" => $this->getdespassword(),
 			":desemail"=>$this->getdesemail(),
 			":nrphone"=>$this->getnrphone(),
 			":inadmin"=>$this->getinadmin()
@@ -215,11 +216,11 @@ class User extends Model {
              	$result = base64_encode($iv.$code);				
 					 
 				if ($inadmin === true) {
-					$link = "http://www.wmecommerce.com.br/admin/forgot/reset?code=$result";
+					$link = "http://www.wmecommerce.com.br:81/admin/forgot/reset?code=$result";
 				} else {
-					$link = "http://www.wmecommerce.com.br/forgot/reset?code=$result";
+					$link = "http://www.wmecommerce.com.br:81/forgot/reset?code=$result";
 				}
-				$mailer = new Mailer($data["desemail"], $data["desperson"], "Redefinir Senha da WM Store", "forgot", array(
+				$mailer = new Mailer($data["desemail"], $data["desperson"], "Redefinir a Senha da WM Store", "forgot", array(
 					"name"=>$data["desperson"],
 					"link"=>$link
 				));
