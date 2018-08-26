@@ -237,7 +237,9 @@ class Cart extends Model {
 	public function getCalculateTotal(){
 
 		$this->updateFreight();
+
 		$totals = $this->getProductsTotals();
+		
 		$this->setvlsubtotal($totals['vlprice']);
         $this->setvltotal($totals['vlprice'] + (float)$this->getvlfreight());
         

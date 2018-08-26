@@ -3,11 +3,11 @@
 use \Hcode\Page;
 use \Hcode\Model\Product;
 use \Hcode\Model\Category;
-use \Hcode\Model\Order;
-use \Hcode\Model\OrderStatus;
 use \Hcode\Model\Cart;
 use \Hcode\Model\Address;
 use \Hcode\Model\User;
+use \Hcode\Model\Order;
+use \Hcode\Model\OrderStatus;
 
 $app->get('/', function() {
 
@@ -116,6 +116,7 @@ $app->post("/cart/freight", function(){
 $app->get("/checkout", function(){
 
 	User::verifyLogin(false);
+
 	$address = new Address();
 	$cart = Cart::getFromSession();
 
@@ -124,10 +125,12 @@ $app->get("/checkout", function(){
 	}
 
 	if (isset($_GET['zipcode'])) {
+
 		$address->loadFromCEP($_GET['zipcode']);
 		$cart->setdeszipcode($_GET['zipcode']);
 		$cart->save();
 		$cart->getCalculateTotal();
+
 	}
 
 	if (!$address->getdesaddress()) $address->setdesaddress('');
@@ -142,6 +145,7 @@ $app->get("/checkout", function(){
 	$page = new Page();
 
 		$page->setTpl("checkout", [
+
 			'cart'=>$cart->getValues(),
 			'address'=>$address->getValues(),
 			'products'=>$cart->getProducts(),
@@ -206,8 +210,7 @@ $app->post("/checkout", function(){
 		'idcart'=>$cart->getidcart(),
 		'idaddress'=>$address->getidaddress(),
 		'iduser'=>$user->getiduser(),
-		'idstatus'=>OrderStatus::EM_ABERTO,
-		//'vltotal'=>$totals['vlprice'] + $cart->getvlfreight()
+		'idstatus'=>OrderStatus::EM_ABERTO,		
 		'vltotal'=>$cart->getvltotal()
 	]);
 
@@ -491,29 +494,40 @@ $app->get("/boleto/:idorder", function($idorder){
 	require_once($path . "layout_itau.php");
 });
 
-/*$app->get("/profile/orders", function(){
+$app->get("/profile/orders", function(){
+
 	User::verifyLogin(false);
+
 	$user = User::getFromSession();
+
 	$page = new Page();
 	$page->setTpl("profile-orders", [
 		'orders'=>$user->getOrders()
+
 	]);
 });
+
 $app->get("/profile/orders/:idorder", function($idorder){
+
 	User::verifyLogin(false);
+
 	$order = new Order();
 	$order->get((int)$idorder);
 	$cart = new Cart();
 	$cart->get((int)$order->getidcart());
 	$cart->getCalculateTotal();
+
 	$page = new Page();
+
 	$page->setTpl("profile-orders-detail", [
 		'order'=>$order->getValues(),
 		'cart'=>$cart->getValues(),
 		'products'=>$cart->getProducts()
+
 	]);	
 });
-$app->get("/profile/change-password", function(){
+
+/*$app->get("/profile/change-password", function(){
 	User::verifyLogin(false);
 	$page = new Page();
 	$page->setTpl("profile-change-password", [

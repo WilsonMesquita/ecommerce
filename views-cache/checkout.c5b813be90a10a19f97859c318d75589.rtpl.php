@@ -21,14 +21,13 @@
 						<div id="customer_details" class="col2-set">
 							<div class="row">
 								<div class="col-md-12">
-									<?php if( $error =! '' ){ ?>
+									<?php if( $error != '' ){ ?>
 
 									<div class="alert alert-danger">
 										<?php echo htmlspecialchars( $error, ENT_COMPAT, 'UTF-8', FALSE ); ?>
 
 									</div>
-									<?php } ?>
-
+									<?php } ?>									
 									<div class="woocommerce-billing-fields">
 										<h3>Endereço de entrega</h3>
 										<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
