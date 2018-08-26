@@ -3,6 +3,8 @@
 use \Hcode\Page;
 use \Hcode\Model\Product;
 use \Hcode\Model\Category;
+use \Hcode\Model\Order;
+use \Hcode\Model\OrderStatus;
 use \Hcode\Model\Cart;
 use \Hcode\Model\Address;
 use \Hcode\Model\User;
@@ -138,6 +140,7 @@ $app->get("/checkout", function(){
 	if (!$address->getdeszipcode()) $address->setdeszipcode('');
 
 	$page = new Page();
+
 		$page->setTpl("checkout", [
 			'cart'=>$cart->getValues(),
 			'address'=>$address->getValues(),
@@ -148,7 +151,9 @@ $app->get("/checkout", function(){
 });
 
 $app->post("/checkout", function(){
+
 	User::verifyLogin(false);
+
 	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
 		Address::setMsgError("Informe o CEP.");
 		header('Location: /checkout');
@@ -179,20 +184,30 @@ $app->post("/checkout", function(){
 		header('Location: /checkout');
 		exit;
 	}
+
 	$user = User::getFromSession();
+
 	$address = new Address();
+
 	$_POST['deszipcode'] = $_POST['zipcode'];
 	$_POST['idperson'] = $user->getidperson();
+
 	$address->setData($_POST);
+
 	$address->save();
+
 	$cart = Cart::getFromSession();
+
 	$cart->getCalculateTotal();
+
 	$order = new Order();
+
 	$order->setData([
 		'idcart'=>$cart->getidcart(),
 		'idaddress'=>$address->getidaddress(),
 		'iduser'=>$user->getiduser(),
 		'idstatus'=>OrderStatus::EM_ABERTO,
+		//'vltotal'=>$totals['vlprice'] + $cart->getvlfreight()
 		'vltotal'=>$cart->getvltotal()
 	]);
 
@@ -209,7 +224,7 @@ $app->post("/checkout", function(){
 	exit;
 });
 
-/*$app->get("/order/:idorder/pagseguro", function($idorder){
+$app->get("/order/:idorder/pagseguro", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
 	$order->get((int)$idorder);
@@ -228,6 +243,7 @@ $app->post("/checkout", function(){
 		]
 	]);
 });
+
 $app->get("/order/:idorder/paypal", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
@@ -237,15 +253,20 @@ $app->get("/order/:idorder/paypal", function($idorder){
 		'header'=>false,
 		'footer'=>false
 	]);
+
 	$page->setTpl("payment-paypal", [
+
 		'order'=>$order->getValues(),
 		'cart'=>$cart->getValues(),
 		'products'=>$cart->getProducts()
+
 	]);
-});*/
+});
 
 $app->get("/login", function(){
+
 	$page = new Page();
+
 	$page->setTpl("login", [
 		'error'=>User::getError(),
 		'errorRegister'=>User::getErrorRegister(),
@@ -395,19 +416,30 @@ $app->post("/profile", function(){
 	exit;
 });
 
-/*$app->get("/order/:idorder", function($idorder){
+$app->get("/order/:idorder", function($idorder){
+
 	User::verifyLogin(false);
+
 	$order = new Order();
+
 	$order->get((int)$idorder);
+
 	$page = new Page();
+
 	$page->setTpl("payment", [
 		'order'=>$order->getValues()
+
 	]);
 });
+
 $app->get("/boleto/:idorder", function($idorder){
+
 	User::verifyLogin(false);
+
 	$order = new Order();
+
 	$order->get((int)$idorder);
+	
 	// DADOS DO BOLETO PARA O SEU CLIENTE
 	$dias_de_prazo_para_pagamento = 10;
 	$taxa_boleto = 5.00;
@@ -458,7 +490,8 @@ $app->get("/boleto/:idorder", function($idorder){
 	require_once($path . "funcoes_itau.php");
 	require_once($path . "layout_itau.php");
 });
-$app->get("/profile/orders", function(){
+
+/*$app->get("/profile/orders", function(){
 	User::verifyLogin(false);
 	$user = User::getFromSession();
 	$page = new Page();

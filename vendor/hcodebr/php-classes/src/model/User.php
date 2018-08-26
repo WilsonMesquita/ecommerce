@@ -12,7 +12,7 @@ class User extends Model {
 	const SECRET = "WmS0ftw@r3S3cr3t";
 	const ERROR = "UserError";
 	const ERROR_REGISTER = "UserErrorRegister";
-	const SUCCESS = "UserSucess";
+	const SUCCESS = "UserSucesss";
 
 	public static function getFromSession()
 	{
