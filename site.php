@@ -147,7 +147,7 @@ $app->get("/checkout", function(){
 	]);
 });
 
-/*$app->post("/checkout", function(){
+$app->post("/checkout", function(){
 	User::verifyLogin(false);
 	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
 		Address::setMsgError("Informe o CEP.");
@@ -155,27 +155,27 @@ $app->get("/checkout", function(){
 		exit;
 	}
 	if (!isset($_POST['desaddress']) || $_POST['desaddress'] === '') {
-		Address::setMsgError("Informe o endereço.");
+		Address::setMsgError("Ôops, informe o endereço.");
 		header('Location: /checkout');
 		exit;
 	}
 	if (!isset($_POST['desdistrict']) || $_POST['desdistrict'] === '') {
-		Address::setMsgError("Informe o bairro.");
+		Address::setMsgError("Ôops, informe o bairro.");
 		header('Location: /checkout');
 		exit;
 	}
 	if (!isset($_POST['descity']) || $_POST['descity'] === '') {
-		Address::setMsgError("Informe a cidade.");
+		Address::setMsgError("Ôops, informe a cidade.");
 		header('Location: /checkout');
 		exit;
 	}
 	if (!isset($_POST['desstate']) || $_POST['desstate'] === '') {
-		Address::setMsgError("Informe o estado.");
+		Address::setMsgError("Ôops, informe o estado.");
 		header('Location: /checkout');
 		exit;
 	}
 	if (!isset($_POST['descountry']) || $_POST['descountry'] === '') {
-		Address::setMsgError("Informe o país.");
+		Address::setMsgError("Ôops, informe o país.");
 		header('Location: /checkout');
 		exit;
 	}
@@ -195,7 +195,9 @@ $app->get("/checkout", function(){
 		'idstatus'=>OrderStatus::EM_ABERTO,
 		'vltotal'=>$cart->getvltotal()
 	]);
+
 	$order->save();
+
 	switch ((int)$_POST['payment-method']) {
 		case 1:
 		header("Location: /order/".$order->getidorder()."/pagseguro");
@@ -206,7 +208,8 @@ $app->get("/checkout", function(){
 	}
 	exit;
 });
-$app->get("/order/:idorder/pagseguro", function($idorder){
+
+/*$app->get("/order/:idorder/pagseguro", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
 	$order->get((int)$idorder);
@@ -352,7 +355,7 @@ $app->post("/forgot/reset", function(){
 
 });
 
-/*$app->get("/profile", function(){
+$app->get("/profile", function(){
 	User::verifyLogin(false);
 	$user = User::getFromSession();
 	$page = new Page();
@@ -365,19 +368,19 @@ $app->post("/forgot/reset", function(){
 $app->post("/profile", function(){
 	User::verifyLogin(false);
 	if (!isset($_POST['desperson']) || $_POST['desperson'] === '') {
-		User::setError("Preencha o seu nome.");
+		User::setError("Ôops, preencha o seu nome!");
 		header('Location: /profile');
 		exit;
 	}
 	if (!isset($_POST['desemail']) || $_POST['desemail'] === '') {
-		User::setError("Preencha o seu e-mail.");
+		User::setError("Ôops, preencha o seu e-mail!");
 		header('Location: /profile');
 		exit;
 	}
 	$user = User::getFromSession();
 	if ($_POST['desemail'] !== $user->getdesemail()) {
 		if (User::checkLoginExists($_POST['desemail']) === true) {
-			User::setError("Este endereço de e-mail já está cadastrado.");
+			User::setError("Ôops, este endereço de e-mail já está cadastrado!");
 			header('Location: /profile');
 			exit;
 		}
@@ -391,7 +394,8 @@ $app->post("/profile", function(){
 	header('Location: /profile');
 	exit;
 });
-$app->get("/order/:idorder", function($idorder){
+
+/*$app->get("/order/:idorder", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
 	$order->get((int)$idorder);
