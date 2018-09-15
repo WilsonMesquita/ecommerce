@@ -1,14 +1,17 @@
 <?php 
 
 namespace Hcode\Model;
+
 use \Hcode\DB\Sql;
 use \Hcode\Model;
 use \Hcode\Mailer;
 use \Hcode\Model\User;
 
 class Cart extends Model {
+
 	const SESSION = "Cart";
 	const SESSION_ERROR = "CartError";
+
 	public static function getFromSession(){
 
         $cart = new Cart();
@@ -66,8 +69,9 @@ class Cart extends Model {
     }
     
 	public function save(){
-
+		
 		$sql = new Sql();
+
 		$results = $sql->select("CALL sp_carts_save(:idcart, :dessessionid, :iduser, :deszipcode, :vlfreight, :nrdays)", [
 			':idcart'=>$this->getidcart(),
 			':dessessionid'=>$this->getdessessionid(),
@@ -77,6 +81,7 @@ class Cart extends Model {
             ':nrdays'=>$this->getnrdays()
             
 		]);
+		
 		$this->setData($results[0]);
     }
     
@@ -150,7 +155,9 @@ class Cart extends Model {
 	public function setFreight($nrzipcode){
 
 		$nrzipcode = str_replace('-', '', $nrzipcode);
+
 		$totals = $this->getProductsTotals();
+
 		if ($totals['nrqtd'] > 0) {
 			if ($totals['vlheight'] < 2) $totals['vlheight'] = 2;
 			if ($totals['vllength'] < 16) $totals['vllength'] = 16;
@@ -175,14 +182,10 @@ class Cart extends Model {
 			$result = $xml->Servicos->cServico;
 
 			if ($result->MsgErro != '') {
-
 				Cart::setMsgError($result->MsgErro);
-
             }
             else {
-
 				Cart::clearMsgError();
-
             }
             
 			$this->setnrdays($result->PrazoEntrega);

@@ -159,7 +159,7 @@ $app->post("/checkout", function(){
 	User::verifyLogin(false);
 
 	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
-		Address::setMsgError("Informe o CEP.");
+		Address::setMsgError("Ôops, informe o CEP.");
 		header('Location: /checkout');
 		exit;
 	}
@@ -194,7 +194,7 @@ $app->post("/checkout", function(){
 	$address = new Address();
 
 	$_POST['deszipcode'] = $_POST['zipcode'];
-	$_POST['idperson'] = $user->getidperson();
+	$_POST['idperson'] = $user->getidperson();	
 
 	$address->setData($_POST);
 
@@ -204,7 +204,7 @@ $app->post("/checkout", function(){
 
 	$cart->getCalculateTotal();
 
-	$order = new Order();
+	$order = new Order();	
 
 	$order->setData([
 		'idcart'=>$cart->getidcart(),
@@ -215,8 +215,10 @@ $app->post("/checkout", function(){
 	]);
 
 	$order->save();
+	header("Location: /order/".$order->getidorder());
+	exit;
 
-	switch ((int)$_POST['payment-method']) {
+	/*switch ((int)$_POST['payment-method']) {
 		case 1:
 		header("Location: /order/".$order->getidorder()."/pagseguro");
 		break;
@@ -224,10 +226,10 @@ $app->post("/checkout", function(){
 		header("Location: /order/".$order->getidorder()."/paypal");
 		break;
 	}
-	exit;
+	exit;*/
 });
 
-$app->get("/order/:idorder/pagseguro", function($idorder){
+/*$app->get("/order/:idorder/pagseguro", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
 	$order->get((int)$idorder);
@@ -264,7 +266,7 @@ $app->get("/order/:idorder/paypal", function($idorder){
 		'products'=>$cart->getProducts()
 
 	]);
-});
+});*/
 
 $app->get("/login", function(){
 
@@ -427,11 +429,12 @@ $app->get("/order/:idorder", function($idorder){
 
 	$order->get((int)$idorder);
 
+	exit;
+
 	$page = new Page();
 
 	$page->setTpl("payment", [
 		'order'=>$order->getValues()
-
 	]);
 });
 
@@ -494,7 +497,7 @@ $app->get("/boleto/:idorder", function($idorder){
 	require_once($path . "layout_itau.php");
 });
 
-$app->get("/profile/orders", function(){
+$app->get("/profile/order", function(){
 
 	User::verifyLogin(false);
 
@@ -507,7 +510,7 @@ $app->get("/profile/orders", function(){
 	]);
 });
 
-$app->get("/profile/orders/:idorder", function($idorder){
+$app->get("/profile/order/:idorder", function($idorder){
 
 	User::verifyLogin(false);
 
@@ -523,11 +526,10 @@ $app->get("/profile/orders/:idorder", function($idorder){
 		'order'=>$order->getValues(),
 		'cart'=>$cart->getValues(),
 		'products'=>$cart->getProducts()
-
 	]);	
 });
 
-/*$app->get("/profile/change-password", function(){
+$app->get("/profile/change-password", function(){
 	User::verifyLogin(false);
 	$page = new Page();
 	$page->setTpl("profile-change-password", [
@@ -535,10 +537,11 @@ $app->get("/profile/orders/:idorder", function($idorder){
 		'changePassSuccess'=>User::getSuccess()
 	]);
 });
+
 $app->post("/profile/change-password", function(){
 	User::verifyLogin(false);
 	if (!isset($_POST['current_pass']) || $_POST['current_pass'] === '') {
-		User::setError("Digite a senha atual.");
+		User::setError("Ôops, digite a senha atual.");
 		header("Location: /profile/change-password");
 		exit;
 	}
@@ -547,27 +550,32 @@ $app->post("/profile/change-password", function(){
 		header("Location: /profile/change-password");
 		exit;
 	}
+
 	if (!isset($_POST['new_pass_confirm']) || $_POST['new_pass_confirm'] === '') {
 		User::setError("Confirme a nova senha.");
 		header("Location: /profile/change-password");
 		exit;
 	}
+
 	if ($_POST['current_pass'] === $_POST['new_pass']) {
-		User::setError("A sua nova senha deve ser diferente da atual.");
+		User::setError("Ôops, a sua nova senha deve ser diferente da atual.");
 		header("Location: /profile/change-password");
 		exit;		
 	}
+
 	$user = User::getFromSession();
 	if (!password_verify($_POST['current_pass'], $user->getdespassword())) {
-		User::setError("A senha está inválida.");
+		User::setError("Ôops, a senha está inválida.");
 		header("Location: /profile/change-password");
 		exit;			
 	}
+
 	$user->setdespassword($_POST['new_pass']);
 	$user->update();
-	User::setSuccess("Senha alterada com sucesso.");
+	User::setSuccess("Senha alterada com sucesso!");
 	header("Location: /profile/change-password");
 	exit;
-});*/
+	
+});
 
 ?>

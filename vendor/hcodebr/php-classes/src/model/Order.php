@@ -1,6 +1,7 @@
 <?php
 
 namespace Hcode\Model;
+
 use \Hcode\DB\Sql;
 use \Hcode\Model;
 use \Hcode\Model\Cart;
@@ -12,9 +13,10 @@ class Order extends Model {
     
     public function save(){
 
-        $sql = new Sql();
+		$sql = new Sql();
         
 		$results = $sql->select("CALL sp_orders_save(:idorder, :idcart, :iduser, :idstatus, :idaddress, :vltotal)", [
+			
 			':idorder'=>$this->getidorder(),
 			':idcart'=>$this->getidcart(),
 			':iduser'=>$this->getiduser(),
@@ -23,6 +25,7 @@ class Order extends Model {
             ':vltotal'=>$this->getvltotal()
             
 		]);
+		
 		if (count($results) > 0) {
 			$this->setData($results[0]);
 		}
@@ -50,7 +53,7 @@ class Order extends Model {
 		}
     }
     
-	public static function listAll(){
+	/*public static function listAll(){
 
         $sql = new Sql();
         
@@ -170,7 +173,7 @@ class Order extends Model {
 			'total'=>(int)$resultTotal[0]["nrtotal"],
 			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
-	}
+	}*/
 }
 
 ?>

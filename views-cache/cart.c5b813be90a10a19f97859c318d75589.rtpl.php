@@ -44,7 +44,7 @@
 
                                     <tr class="cart_item">
                                         <td class="product-remove">
-                                            <a title="Remove this item" class="remove" href="/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/remove">×</a>
+                                            <a title="Remove this item" class="remove" href="/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/remove">X</a>
                                         </td>
 
                                         <td class="product-thumbnail">
@@ -91,7 +91,7 @@
 
                                 </div>
 
-                                <div class="cart_totals ">
+                                <div class="cart_totals">
 
                                     <h2>Resumo da Compra</h2>
 
