@@ -390,7 +390,9 @@ class User extends Model {
 	public static function getPageSearch($search, $page = 1, $itemsPerPage = 10)
 	{
 		$start = ($page - 1) * $itemsPerPage;
+
 		$sql = new Sql();
+		
 		$results = $sql->select("
 			SELECT SQL_CALC_FOUND_ROWS *
 			FROM tb_users a 

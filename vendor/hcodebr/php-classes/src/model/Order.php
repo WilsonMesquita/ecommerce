@@ -53,7 +53,7 @@ class Order extends Model {
 		}
     }
     
-	/*public static function listAll(){
+	public static function listAll(){
 
         $sql = new Sql();
         
@@ -173,7 +173,7 @@ class Order extends Model {
 			'total'=>(int)$resultTotal[0]["nrtotal"],
 			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
-	}*/
+	}
 }
 
 ?>
