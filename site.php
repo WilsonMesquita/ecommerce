@@ -219,7 +219,7 @@ $app->post("/checkout", function(){
 	header("Location: /order/".$order->getidorder()."/pagseguro");
 	exit;
 
-	/*switch ((int)$_POST['payment-method']) {
+	switch ((int)$_POST['payment-method']) {
 		case 1:
 		header("Location: /order/".$order->getidorder()."/pagseguro");
 		break;
@@ -227,7 +227,7 @@ $app->post("/checkout", function(){
 		header("Location: /order/".$order->getidorder()."/paypal");
 		break;
 	}
-	exit;*/
+	exit;
 });
 
 $app->get("/order/:idorder/pagseguro", function($idorder){
@@ -250,7 +250,7 @@ $app->get("/order/:idorder/pagseguro", function($idorder){
 	]);
 });
 
-/*$app->get("/order/:idorder/paypal", function($idorder){
+$app->get("/order/:idorder/paypal", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
 	$order->get((int)$idorder);
@@ -267,7 +267,7 @@ $app->get("/order/:idorder/pagseguro", function($idorder){
 		'products'=>$cart->getProducts()
 
 	]);
-});*/
+});
 
 $app->get("/login", function(){
 
