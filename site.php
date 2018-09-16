@@ -215,7 +215,8 @@ $app->post("/checkout", function(){
 	]);
 
 	$order->save();
-	header("Location: /order/".$order->getidorder());
+
+	header("Location: /order/".$order->getidorder()."/pagseguro");
 	exit;
 
 	/*switch ((int)$_POST['payment-method']) {
@@ -229,7 +230,7 @@ $app->post("/checkout", function(){
 	exit;*/
 });
 
-/*$app->get("/order/:idorder/pagseguro", function($idorder){
+$app->get("/order/:idorder/pagseguro", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
 	$order->get((int)$idorder);
@@ -249,7 +250,7 @@ $app->post("/checkout", function(){
 	]);
 });
 
-$app->get("/order/:idorder/paypal", function($idorder){
+/*$app->get("/order/:idorder/paypal", function($idorder){
 	User::verifyLogin(false);
 	$order = new Order();
 	$order->get((int)$idorder);
