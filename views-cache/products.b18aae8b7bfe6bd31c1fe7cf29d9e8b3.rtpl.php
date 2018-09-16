@@ -2,7 +2,9 @@
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <h1>Lista de Produtos</h1>
+  <h1>
+    Lista de Produtos
+  </h1>
   <ol class="breadcrumb">
     <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
     <li class="active"><a href="/admin/products">Produtos</a></li>
@@ -18,13 +20,23 @@
             
             <div class="box-header">
               <a href="/admin/products/create" class="btn btn-success">Cadastrar Produto</a>
+              <div class="box-tools">
+                <form action="/admin/products">
+                  <div class="input-group input-group-sm" style="width: 250px;">
+                    <input type="text" name="search" class="form-control pull-right" placeholder="Search" value="<?php echo htmlspecialchars( $search, ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
 
             <div class="box-body no-padding">
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th style="width: 10px">Id</th>
+                    <th style="width: 10px">#</th>
                     <th>Nome da Produto</th>
                     <th>Preço</th>
                     <th>Largura</th>
@@ -36,7 +48,6 @@
                 </thead>
                 <tbody>
                   <?php $counter1=-1;  if( isset($products) && ( is_array($products) || $products instanceof Traversable ) && sizeof($products) ) foreach( $products as $key1 => $value1 ){ $counter1++; ?>
-
                   <tr>
                     <td><?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                     <td><?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
@@ -51,11 +62,17 @@
                     </td>
                   </tr>
                   <?php } ?>
-
                 </tbody>
               </table>
             </div>
             <!-- /.box-body -->
+            <div class="box-footer clearfix">
+              <ul class="pagination pagination-sm no-margin pull-right">
+                <?php $counter1=-1;  if( isset($pages) && ( is_array($pages) || $pages instanceof Traversable ) && sizeof($pages) ) foreach( $pages as $key1 => $value1 ){ $counter1++; ?>
+                <li><a href="<?php echo htmlspecialchars( $value1["href"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["text"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></li>
+                <?php } ?>
+              </ul>
+            </div>
           </div>
   	</div>
   </div>

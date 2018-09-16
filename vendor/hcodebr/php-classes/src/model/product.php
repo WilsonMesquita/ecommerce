@@ -142,8 +142,7 @@ class Product extends Model {
 
 		]);
 	}
-
-	/*
+	
 	public static function getPage($page = 1, $itemsPerPage = 10)
 	{
 		$start = ($page - 1) * $itemsPerPage;
@@ -161,6 +160,7 @@ class Product extends Model {
 			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
 	}
+
 	public static function getPageSearch($search, $page = 1, $itemsPerPage = 10)
 	{
 		$start = ($page - 1) * $itemsPerPage;
@@ -180,8 +180,7 @@ class Product extends Model {
 			'total'=>(int)$resultTotal[0]["nrtotal"],
 			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
-	}*/
-
+	}
 }
 
  ?>
