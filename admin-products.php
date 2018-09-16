@@ -8,7 +8,7 @@ use \Hcode\Model\Product;
 
 		User::verifyLogin();
 
-		$search = (isset($_GET['search'])) ? $_GET['search'] : "";
+	$search = (isset($_GET['search'])) ? $_GET['search'] : "";
 	$page = (isset($_GET['$page'])) ? (int)$_GET['page'] : 1;
 
 	if ($search != '') {
@@ -28,8 +28,6 @@ use \Hcode\Model\Product;
 			'text'=>$x+1
 		]);
 	}
-
-		$products = Product::listAll();
 
 		$page = new PageAdmin();
 		$page -> setTpl("products", array(
