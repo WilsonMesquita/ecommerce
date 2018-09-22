@@ -210,14 +210,11 @@ $app->post("/checkout", function(){
 		'idcart'=>$cart->getidcart(),
 		'idaddress'=>$address->getidaddress(),
 		'iduser'=>$user->getiduser(),
-		'idstatus'=>OrderStatus::EM_ABERTO,		
+		'idstatus'=>OrderStatus::EM_ABERTO,
 		'vltotal'=>$cart->getvltotal()
 	]);
 
 	$order->save();
-
-	header("Location: /order/".$order->getidorder()."/pagseguro");
-	exit;
 
 	switch ((int)$_POST['payment-method']) {
 		case 1:
